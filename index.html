@@ -4,8 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1870865959509551">
-    <title>調味料換算 - 大さじ・小さじ・カップ・ml・gを瞬時に変換</title>
-    <meta name="description" content="調味料の単位をワンタップで変換。大さじ・小さじ・カップ・ml・gを瞬時に計算。100種類以上の調味料に対応。">
+
+    <!-- 基本SEO -->
+    <title>調味料換算 | 大さじ・小さじ・カップ・ml・gを瞬時に変換【無料】</title>
+    <meta name="description" content="料理中に便利な調味料換算ツール。大さじ・小さじ・カップ・ml・グラムを瞬時に変換。砂糖、塩、醤油、油など100種類以上の調味料に対応。各調味料の正確な密度データで計算。">
+    <meta name="keywords" content="調味料換算,大さじ,小さじ,カップ,ml,グラム,g,変換,計算,料理,レシピ,砂糖,塩,醤油,油,計量">
+    <meta name="author" content="調味料換算">
+    <link rel="canonical" href="https://amane159.github.io/">
+
+    <!-- OGP (Facebook, LINE等) -->
+    <meta property="og:title" content="調味料換算 | 大さじ・小さじ・カップ・ml・gを瞬時に変換">
+    <meta property="og:description" content="料理中に便利な調味料換算ツール。100種類以上の調味料に対応。大さじ・小さじ・カップ・ml・グラムを瞬時に変換できます。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://amane159.github.io/">
+    <meta property="og:site_name" content="調味料換算">
+    <meta property="og:locale" content="ja_JP">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="調味料換算 | 大さじ・小さじ・カップ・ml・gを瞬時に変換">
+    <meta name="twitter:description" content="料理中に便利な調味料換算ツール。100種類以上の調味料に対応。">
+
+    <!-- 構造化データ (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "調味料換算",
+        "description": "調味料の単位を変換するWebアプリ。大さじ・小さじ・カップ・ml・グラムを瞬時に計算。100種類以上の調味料に対応。",
+        "url": "https://amane159.github.io/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "調味料換算"
+        }
+    }
+    </script>
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LBT2KF4T6T"></script>
@@ -34,6 +74,7 @@
             background-color: #FFFBF8;
             color: #424242;
             min-height: 100vh;
+            line-height: 1.6;
         }
 
         .container {
@@ -77,6 +118,32 @@
             font-size: 14px;
             font-weight: 600;
             color: #757575;
+        }
+
+        .card h2 {
+            font-size: 16px;
+            color: #5D4037;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #616161;
+            margin-bottom: 10px;
+        }
+
+        .card ul {
+            font-size: 14px;
+            color: #616161;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .card li {
+            margin-bottom: 6px;
         }
 
         /* 調味料選択 */
@@ -256,6 +323,7 @@
             gap: 8px;
             font-size: 18px;
             color: #424242;
+            margin-bottom: 0;
         }
 
         .close-btn {
@@ -379,19 +447,6 @@
             color: #9E9E9E;
         }
 
-        /* フッター */
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #9E9E9E;
-            font-size: 12px;
-        }
-
-        footer a {
-            color: #FF8A65;
-            text-decoration: none;
-        }
-
         /* 広告エリア */
         .ad-container {
             max-width: 480px;
@@ -409,10 +464,77 @@
             overflow: hidden;
         }
 
+        /* フッター */
+        footer {
+            background: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        footer nav {
+            margin-bottom: 20px;
+        }
+
+        footer nav a {
+            color: #757575;
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 13px;
+        }
+
+        footer nav a:hover {
+            color: #FF8A65;
+        }
+
+        footer .copyright {
+            color: #9E9E9E;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        footer .app-link {
+            margin-top: 15px;
+        }
+
+        footer .app-link a {
+            color: #FF8A65;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        /* 特徴セクション */
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .feature-item {
+            background: #FFF8F5;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .feature-item .icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .feature-item .text {
+            font-size: 12px;
+            color: #5D4037;
+            font-weight: 500;
+        }
+
         /* レスポンシブ */
         @media (max-width: 360px) {
             .input-row {
                 flex-direction: column;
+            }
+            .features {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -422,9 +544,9 @@
         <h1><span>🥄</span> 調味料換算</h1>
     </header>
 
-    <div class="container">
+    <main class="container">
         <!-- 調味料選択 -->
-        <div class="card seasoning-selector" onclick="openModal()">
+        <div class="card seasoning-selector" onclick="openModal()" role="button" aria-label="調味料を選択">
             <div class="seasoning-info">
                 <div class="seasoning-icon" id="selectedEmoji">🍬</div>
                 <div class="seasoning-details">
@@ -443,10 +565,12 @@
             </div>
             <div class="input-row">
                 <div class="input-group">
-                    <input type="number" id="amount" value="1" step="0.1" min="0" oninput="calculate()">
+                    <label for="amount" class="visually-hidden">数量</label>
+                    <input type="number" id="amount" value="1" step="0.1" min="0" oninput="calculate()" aria-label="数量">
                 </div>
                 <div class="input-group">
-                    <select id="unit" onchange="calculate()">
+                    <label for="unit" class="visually-hidden">単位</label>
+                    <select id="unit" onchange="calculate()" aria-label="単位">
                         <option value="tablespoon">大さじ</option>
                         <option value="teaspoon">小さじ</option>
                         <option value="cup">カップ</option>
@@ -472,7 +596,7 @@
             </div>
             <div class="result-row result-cup">
                 <span class="unit-name">カップ</span>
-                <span class="value" id="result-cup">1/13 1/3</span>
+                <span class="value" id="result-cup">1/13</span>
             </div>
             <div class="result-row result-ml">
                 <span class="unit-name">ml</span>
@@ -483,10 +607,8 @@
                 <span class="value" id="result-gram">9</span>
             </div>
         </div>
-    </div>
 
-    <!-- 広告エリア -->
-    <div class="ad-container">
+        <!-- 広告エリア -->
         <div class="ad-banner">
             <ins class="adsbygoogle"
                 style="display:block"
@@ -498,25 +620,90 @@
                 (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
         </div>
-    </div>
+
+        <!-- 使い方説明 -->
+        <article class="card">
+            <h2>📖 使い方</h2>
+            <p>調味料換算は、料理中に必要な調味料の単位変換を瞬時に行えるツールです。</p>
+            <ol style="margin-left: 20px; color: #616161; font-size: 14px;">
+                <li>上部のカードをタップして調味料を選択</li>
+                <li>数量と単位を入力</li>
+                <li>自動で全ての単位に換算されます</li>
+            </ol>
+        </article>
+
+        <!-- 特徴 -->
+        <article class="card">
+            <h2>✨ 特徴</h2>
+            <div class="features">
+                <div class="feature-item">
+                    <div class="icon">🧂</div>
+                    <div class="text">100種類以上の調味料</div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">⚡</div>
+                    <div class="text">瞬時に換算</div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">📊</div>
+                    <div class="text">正確な密度データ</div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">📱</div>
+                    <div class="text">スマホ対応</div>
+                </div>
+            </div>
+        </article>
+
+        <!-- こんな時に便利 -->
+        <article class="card">
+            <h2>💡 こんな時に便利</h2>
+            <ul>
+                <li>レシピに「砂糖 大さじ2」とあるけど、グラムで知りたい時</li>
+                <li>海外レシピの「ml」を日本の「大さじ」に変換したい時</li>
+                <li>計量スプーンがない時に、グラム表示で代用したい時</li>
+                <li>お菓子作りで正確な分量を知りたい時</li>
+            </ul>
+        </article>
+
+        <!-- 調味料の換算例 -->
+        <article class="card">
+            <h2>📝 調味料の換算例</h2>
+            <p>調味料は種類によって密度（重さ）が異なります。例えば：</p>
+            <ul>
+                <li><strong>上白糖</strong>：大さじ1 = 9g</li>
+                <li><strong>食塩</strong>：大さじ1 = 18g</li>
+                <li><strong>サラダ油</strong>：大さじ1 = 12g</li>
+                <li><strong>醤油</strong>：大さじ1 = 18g</li>
+                <li><strong>小麦粉</strong>：大さじ1 = 9g</li>
+            </ul>
+            <p>本ツールは各調味料の正確な密度データを使用して計算するため、レシピ通りの味を再現できます。</p>
+        </article>
+    </main>
 
     <footer>
-        <p>© 2025 調味料換算</p>
-        <p><a href="https://play.google.com/store/apps/details?id=app.seasoning.converter" target="_blank">Androidアプリ版はこちら</a></p>
+        <nav>
+            <a href="privacy.html">プライバシーポリシー</a>
+            <a href="mailto:seasoning.converter@gmail.com">お問い合わせ</a>
+        </nav>
+        <p class="copyright">© 2025 調味料換算 All Rights Reserved.</p>
+        <div class="app-link">
+            <a href="https://play.google.com/store/apps/details?id=app.seasoning.converter" target="_blank" rel="noopener">📱 Androidアプリ版はこちら</a>
+        </div>
     </footer>
 
     <!-- モーダル -->
-    <div class="modal-overlay" id="modal" onclick="closeModalOnOverlay(event)">
+    <div class="modal-overlay" id="modal" onclick="closeModalOnOverlay(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal">
             <div class="modal-header">
-                <h2><span>🧂</span> 調味料を選択</h2>
-                <button class="close-btn" onclick="closeModal()">✕</button>
+                <h2 id="modalTitle"><span>🧂</span> 調味料を選択</h2>
+                <button class="close-btn" onclick="closeModal()" aria-label="閉じる">✕</button>
             </div>
             <div class="modal-search">
-                <input type="text" id="searchInput" placeholder="調味料を検索..." oninput="filterSeasonings()">
+                <input type="text" id="searchInput" placeholder="調味料を検索..." oninput="filterSeasonings()" aria-label="調味料を検索">
             </div>
-            <div class="category-chips" id="categoryChips"></div>
-            <div class="seasoning-list" id="seasoningList"></div>
+            <div class="category-chips" id="categoryChips" role="tablist"></div>
+            <div class="seasoning-list" id="seasoningList" role="listbox"></div>
         </div>
     </div>
 
@@ -744,7 +931,7 @@
                 html += `<div class="category-header">${cat.emoji} ${cat.name}</div>`;
                 items.forEach(s => {
                     html += `
-                        <div class="seasoning-item" onclick="selectSeasoning('${s.id}')">
+                        <div class="seasoning-item" onclick="selectSeasoning('${s.id}')" role="option">
                             <span class="emoji">${cat.emoji}</span>
                             <div class="info">
                                 <div class="name">${s.name}</div>
