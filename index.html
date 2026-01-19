@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-1870865959509551">
+    <title>調味料換算 - 大さじ・小さじ・カップ・ml・gを瞬時に変換</title>
+    <meta name="description" content="調味料の単位をワンタップで変換。大さじ・小さじ・カップ・ml・gを瞬時に計算。100種類以上の調味料に対応。">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LBT2KF4T6T"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LBT2KF4T6T');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1870865959509551" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FFFBF8;
+            color: #424242;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* ヘッダー */
+        header {
+            background: white;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+        }
+
+        header h1 {
+            font-size: 20px;
+            color: #5D4037;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* カード共通 */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #757575;
+        }
+
+        /* 調味料選択 */
+        .seasoning-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .seasoning-selector:hover {
+            transform: scale(1.01);
+        }
+
+        .seasoning-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .seasoning-icon {
+            width: 52px;
+            height: 52px;
+            background: #FFF3E0;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .seasoning-details .label {
+            font-size: 12px;
+            color: #9E9E9E;
+        }
+
+        .seasoning-details .name {
+            font-size: 17px;
+            font-weight: 700;
+            color: #424242;
+        }
+
+        .seasoning-details .density {
+            font-size: 13px;
+            color: #FF8A65;
+            font-weight: 500;
+        }
+
+        .arrow-btn {
+            width: 36px;
+            height: 36px;
+            background: #FFF3E0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FF8A65;
+        }
+
+        /* 入力フォーム */
+        .input-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-group {
+            flex: 1;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #E0E0E0;
+            border-radius: 14px;
+            font-size: 16px;
+            font-family: inherit;
+            background: #FAFAFA;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #FF8A65;
+            background: white;
+        }
+
+        .input-group input {
+            font-size: 20px;
+            font-weight: 700;
+            color: #424242;
+        }
+
+        /* 結果表示 */
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .result-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-row .unit-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #616161;
+        }
+
+        .result-row .value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .result-tablespoon { background: #FFF3E0; }
+        .result-tablespoon .value { color: #FF8A65; }
+
+        .result-teaspoon { background: #E8F5E9; }
+        .result-teaspoon .value { color: #81C784; }
+
+        .result-cup { background: #E3F2FD; }
+        .result-cup .value { color: #64B5F6; }
+
+        .result-ml { background: #F3E5F5; }
+        .result-ml .value { color: #BA68C8; }
+
+        .result-gram { background: #FFFDE7; }
+        .result-gram .value { color: #FFD54F; }
+
+        /* モーダル */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .modal-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            color: #424242;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #9E9E9E;
+        }
+
+        .modal-search {
+            padding: 12px 18px;
+        }
+
+        .modal-search input {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 14px;
+            background: #F5F5F5;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .modal-search input:focus {
+            outline: none;
+            background: #FAFAFA;
+        }
+
+        /* カテゴリチップ */
+        .category-chips {
+            display: flex;
+            gap: 8px;
+            padding: 0 18px 12px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .category-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chip {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            border-radius: 18px;
+            border: none;
+            background: #F5F5F5;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chip.active {
+            background: #FF8A65;
+            color: white;
+        }
+
+        /* 調味料リスト */
+        .seasoning-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 18px 18px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 4px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #FF8A65;
+        }
+
+        .category-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #E0E0E0;
+        }
+
+        .seasoning-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #F5F5F5;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .seasoning-item:hover {
+            background: #EEEEEE;
+        }
+
+        .seasoning-item .emoji {
+            font-size: 22px;
+        }
+
+        .seasoning-item .info {
+            flex: 1;
+        }
+
+        .seasoning-item .name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #424242;
+        }
+
+        .seasoning-item .density {
+            font-size: 12px;
+            color: #9E9E9E;
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #9E9E9E;
+            font-size: 12px;
+        }
+
+        footer a {
+            color: #FF8A65;
+            text-decoration: none;
+        }
+
+        /* 広告エリア */
+        .ad-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .ad-banner {
+            background: #F5F5F5;
+            border-radius: 12px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 360px) {
+            .input-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><span>🥄</span> 調味料換算</h1>
+    </header>
+
+    <div class="container">
+        <!-- 調味料選択 -->
+        <div class="card seasoning-selector" onclick="openModal()">
+            <div class="seasoning-info">
+                <div class="seasoning-icon" id="selectedEmoji">🍬</div>
+                <div class="seasoning-details">
+                    <div class="label">選択中</div>
+                    <div class="name" id="selectedName">砂糖（上白糖）</div>
+                    <div class="density">密度: <span id="selectedDensity">0.6</span> g/ml</div>
+                </div>
+            </div>
+            <div class="arrow-btn">▶</div>
+        </div>
+
+        <!-- 入力 -->
+        <div class="card">
+            <div class="card-header">
+                <span>✏️</span> 数量を入力
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <input type="number" id="amount" value="1" step="0.1" min="0" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <select id="unit" onchange="calculate()">
+                        <option value="tablespoon">大さじ</option>
+                        <option value="teaspoon">小さじ</option>
+                        <option value="cup">カップ</option>
+                        <option value="ml">ml</option>
+                        <option value="gram">g</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 結果 -->
+        <div class="card">
+            <div class="card-header">
+                <span>📊</span> 換算結果
+            </div>
+            <div class="result-row result-tablespoon">
+                <span class="unit-name">大さじ</span>
+                <span class="value" id="result-tablespoon">1</span>
+            </div>
+            <div class="result-row result-teaspoon">
+                <span class="unit-name">小さじ</span>
+                <span class="value" id="result-teaspoon">3</span>
+            </div>
+            <div class="result-row result-cup">
+                <span class="unit-name">カップ</span>
+                <span class="value" id="result-cup">1/13 1/3</span>
+            </div>
+            <div class="result-row result-ml">
+                <span class="unit-name">ml</span>
+                <span class="value" id="result-ml">15</span>
+            </div>
+            <div class="result-row result-gram">
+                <span class="unit-name">g</span>
+                <span class="value" id="result-gram">9</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 広告エリア -->
+    <div class="ad-container">
+        <div class="ad-banner">
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-1870865959509551"
+                data-ad-slot="auto"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 調味料換算</p>
+        <p><a href="https://play.google.com/store/apps/details?id=app.seasoning.converter" target="_blank">Androidアプリ版はこちら</a></p>
+    </footer>
+
+    <!-- モーダル -->
+    <div class="modal-overlay" id="modal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><span>🧂</span> 調味料を選択</h2>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-search">
+                <input type="text" id="searchInput" placeholder="調味料を検索..." oninput="filterSeasonings()">
+            </div>
+            <div class="category-chips" id="categoryChips"></div>
+            <div class="seasoning-list" id="seasoningList"></div>
+        </div>
+    </div>
+
+    <script>
+        // 調味料データ
+        const categories = {
+            sugar: { name: '砂糖類', emoji: '🍬' },
+            salt: { name: '塩類', emoji: '🧂' },
+            liquid: { name: '液体調味料', emoji: '🫗' },
+            sauce: { name: 'ソース類', emoji: '🥫' },
+            powder: { name: '粉類', emoji: '🌾' },
+            dairy: { name: '乳製品', emoji: '🥛' },
+            spice: { name: 'スパイス', emoji: '🌶' }
+        };
+
+        const seasonings = [
+            // 砂糖類
+            { id: 'sugar', name: '砂糖（上白糖）', density: 0.6, category: 'sugar' },
+            { id: 'granulated_sugar', name: 'グラニュー糖', density: 0.87, category: 'sugar' },
+            { id: 'brown_sugar', name: '黒砂糖', density: 0.6, category: 'sugar' },
+            { id: 'powdered_sugar', name: '粉砂糖', density: 0.53, category: 'sugar' },
+            { id: 'sanonto', name: '三温糖', density: 0.6, category: 'sugar' },
+            { id: 'zarame', name: 'ざらめ糖', density: 1.0, category: 'sugar' },
+            { id: 'wasanbon', name: '和三盆', density: 0.6, category: 'sugar' },
+            { id: 'maple_syrup', name: 'メープルシロップ', density: 1.4, category: 'sugar' },
+            { id: 'molasses', name: '黒蜜', density: 1.4, category: 'sugar' },
+            { id: 'mizuame', name: '水あめ', density: 1.47, category: 'sugar' },
+
+            // 塩類
+            { id: 'salt', name: '塩', density: 1.2, category: 'salt' },
+            { id: 'coarse_salt', name: '粗塩', density: 1.0, category: 'salt' },
+            { id: 'rock_salt', name: '岩塩', density: 1.0, category: 'salt' },
+            { id: 'sea_salt', name: '海塩', density: 1.0, category: 'salt' },
+
+            // 液体調味料
+            { id: 'soy_sauce', name: '醤油（濃口）', density: 1.2, category: 'liquid' },
+            { id: 'light_soy_sauce', name: '醤油（薄口）', density: 1.2, category: 'liquid' },
+            { id: 'tamari', name: 'たまり醤油', density: 1.2, category: 'liquid' },
+            { id: 'mirin', name: 'みりん', density: 1.2, category: 'liquid' },
+            { id: 'sake', name: '料理酒', density: 1.0, category: 'liquid' },
+            { id: 'vinegar', name: '酢（穀物酢）', density: 1.0, category: 'liquid' },
+            { id: 'rice_vinegar', name: '米酢', density: 1.0, category: 'liquid' },
+            { id: 'black_vinegar', name: '黒酢', density: 1.0, category: 'liquid' },
+            { id: 'balsamic', name: 'バルサミコ酢', density: 1.05, category: 'liquid' },
+            { id: 'oil', name: 'サラダ油', density: 0.8, category: 'liquid' },
+            { id: 'sesame_oil', name: 'ごま油', density: 0.8, category: 'liquid' },
+            { id: 'olive_oil', name: 'オリーブオイル', density: 0.8, category: 'liquid' },
+            { id: 'canola_oil', name: '菜種油', density: 0.8, category: 'liquid' },
+            { id: 'rice_oil', name: '米油', density: 0.8, category: 'liquid' },
+            { id: 'coconut_oil', name: 'ココナッツオイル', density: 0.8, category: 'liquid' },
+            { id: 'chili_oil', name: 'ラー油', density: 0.8, category: 'liquid' },
+            { id: 'water', name: '水', density: 1.0, category: 'liquid' },
+            { id: 'mentsuyu', name: 'めんつゆ（3倍濃縮）', density: 1.2, category: 'liquid' },
+            { id: 'mentsuyu_straight', name: 'めんつゆ（ストレート）', density: 1.1, category: 'liquid' },
+            { id: 'ponzu', name: 'ポン酢', density: 1.07, category: 'liquid' },
+            { id: 'shirodashi', name: '白だし', density: 1.13, category: 'liquid' },
+            { id: 'nam_pla', name: 'ナンプラー', density: 1.2, category: 'liquid' },
+            { id: 'red_wine', name: '赤ワイン', density: 1.0, category: 'liquid' },
+            { id: 'white_wine', name: '白ワイン', density: 1.0, category: 'liquid' },
+            { id: 'lemon_juice', name: 'レモン汁', density: 1.0, category: 'liquid' },
+
+            // ソース・ペースト類
+            { id: 'miso', name: '味噌（合わせ）', density: 1.2, category: 'sauce' },
+            { id: 'white_miso', name: '白味噌', density: 1.2, category: 'sauce' },
+            { id: 'red_miso', name: '赤味噌', density: 1.2, category: 'sauce' },
+            { id: 'mayonnaise', name: 'マヨネーズ', density: 0.8, category: 'sauce' },
+            { id: 'ketchup', name: 'ケチャップ', density: 1.0, category: 'sauce' },
+            { id: 'worcester_sauce', name: 'ウスターソース', density: 1.2, category: 'sauce' },
+            { id: 'tonkatsu_sauce', name: 'とんかつソース', density: 1.4, category: 'sauce' },
+            { id: 'chuno_sauce', name: '中濃ソース', density: 1.4, category: 'sauce' },
+            { id: 'oyster_sauce', name: 'オイスターソース', density: 1.2, category: 'sauce' },
+            { id: 'doubanjiang', name: '豆板醤', density: 1.2, category: 'sauce' },
+            { id: 'gochujang', name: 'コチュジャン', density: 1.2, category: 'sauce' },
+            { id: 'tenmenjan', name: '甜麺醤', density: 1.2, category: 'sauce' },
+            { id: 'xo_sauce', name: 'XO醤', density: 1.13, category: 'sauce' },
+            { id: 'honey', name: 'はちみつ', density: 1.4, category: 'sauce' },
+            { id: 'neri_goma', name: '練りごま', density: 1.0, category: 'sauce' },
+            { id: 'peanut_butter', name: 'ピーナッツバター', density: 1.07, category: 'sauce' },
+            { id: 'yakiniku_tare', name: '焼肉のたれ', density: 1.2, category: 'sauce' },
+            { id: 'wasabi', name: 'わさび（チューブ）', density: 1.0, category: 'sauce' },
+            { id: 'karashi', name: 'からし（チューブ）', density: 1.0, category: 'sauce' },
+            { id: 'ginger_paste', name: 'おろししょうが', density: 1.0, category: 'sauce' },
+            { id: 'garlic_paste', name: 'おろしにんにく', density: 1.0, category: 'sauce' },
+            { id: 'yuzu_kosho', name: '柚子胡椒', density: 1.2, category: 'sauce' },
+            { id: 'umeboshi_paste', name: '梅肉', density: 1.2, category: 'sauce' },
+
+            // 粉類
+            { id: 'flour', name: '小麦粉（薄力粉）', density: 0.6, category: 'powder' },
+            { id: 'bread_flour', name: '強力粉', density: 0.6, category: 'powder' },
+            { id: 'medium_flour', name: '中力粉', density: 0.6, category: 'powder' },
+            { id: 'potato_starch', name: '片栗粉', density: 0.6, category: 'powder' },
+            { id: 'cornstarch', name: 'コーンスターチ', density: 0.4, category: 'powder' },
+            { id: 'panko', name: 'パン粉（乾燥）', density: 0.2, category: 'powder' },
+            { id: 'fresh_panko', name: 'パン粉（生）', density: 0.2, category: 'powder' },
+            { id: 'rice_flour', name: '米粉', density: 0.6, category: 'powder' },
+            { id: 'joshinko', name: '上新粉', density: 0.6, category: 'powder' },
+            { id: 'shiratamako', name: '白玉粉', density: 0.6, category: 'powder' },
+            { id: 'mochiko', name: 'もち粉', density: 0.6, category: 'powder' },
+            { id: 'tempura_flour', name: '天ぷら粉', density: 0.6, category: 'powder' },
+            { id: 'okonomiyaki_flour', name: 'お好み焼き粉', density: 0.6, category: 'powder' },
+            { id: 'takoyaki_flour', name: 'たこ焼き粉', density: 0.6, category: 'powder' },
+            { id: 'soba_flour', name: 'そば粉', density: 0.6, category: 'powder' },
+            { id: 'almond_powder', name: 'アーモンドプードル', density: 0.47, category: 'powder' },
+
+            // 乳製品
+            { id: 'butter', name: 'バター', density: 0.8, category: 'dairy' },
+            { id: 'margarine', name: 'マーガリン', density: 0.8, category: 'dairy' },
+            { id: 'milk', name: '牛乳', density: 1.0, category: 'dairy' },
+            { id: 'skim_milk', name: 'スキムミルク', density: 0.4, category: 'dairy' },
+            { id: 'cream', name: '生クリーム', density: 1.0, category: 'dairy' },
+            { id: 'yogurt', name: 'ヨーグルト', density: 1.0, category: 'dairy' },
+            { id: 'sour_cream', name: 'サワークリーム', density: 1.0, category: 'dairy' },
+            { id: 'cream_cheese', name: 'クリームチーズ', density: 1.0, category: 'dairy' },
+            { id: 'parmesan', name: '粉チーズ', density: 0.4, category: 'dairy' },
+            { id: 'condensed_milk', name: '練乳', density: 1.4, category: 'dairy' },
+            { id: 'evaporated_milk', name: 'エバミルク', density: 1.0, category: 'dairy' },
+
+            // スパイス・調味粉類
+            { id: 'pepper', name: 'こしょう', density: 0.4, category: 'spice' },
+            { id: 'white_pepper', name: '白こしょう', density: 0.4, category: 'spice' },
+            { id: 'black_pepper', name: '黒こしょう（粗挽き）', density: 0.4, category: 'spice' },
+            { id: 'shichimi', name: '七味唐辛子', density: 0.4, category: 'spice' },
+            { id: 'ichimi', name: '一味唐辛子', density: 0.4, category: 'spice' },
+            { id: 'sansho', name: '山椒', density: 0.33, category: 'spice' },
+            { id: 'cinnamon', name: 'シナモン', density: 0.4, category: 'spice' },
+            { id: 'nutmeg', name: 'ナツメグ', density: 0.4, category: 'spice' },
+            { id: 'cumin', name: 'クミン', density: 0.4, category: 'spice' },
+            { id: 'paprika', name: 'パプリカパウダー', density: 0.4, category: 'spice' },
+            { id: 'turmeric', name: 'ターメリック', density: 0.4, category: 'spice' },
+            { id: 'curry_powder', name: 'カレー粉', density: 0.4, category: 'spice' },
+            { id: 'garam_masala', name: 'ガラムマサラ', density: 0.4, category: 'spice' },
+            { id: 'oregano', name: 'オレガノ（乾燥）', density: 0.2, category: 'spice' },
+            { id: 'basil', name: 'バジル（乾燥）', density: 0.2, category: 'spice' },
+            { id: 'rosemary', name: 'ローズマリー（乾燥）', density: 0.2, category: 'spice' },
+            { id: 'thyme', name: 'タイム（乾燥）', density: 0.2, category: 'spice' },
+            { id: 'parsley', name: 'パセリ（乾燥）', density: 0.2, category: 'spice' },
+            { id: 'bay_leaf', name: 'ローリエ', density: 0.2, category: 'spice' },
+            { id: 'dashi_powder', name: '顆粒だし（和風）', density: 0.6, category: 'spice' },
+            { id: 'hondashi', name: 'ほんだし', density: 0.6, category: 'spice' },
+            { id: 'chicken_stock', name: '鶏ガラスープの素', density: 0.6, category: 'spice' },
+            { id: 'chinese_stock', name: '中華だしの素', density: 0.6, category: 'spice' },
+            { id: 'consomme', name: 'コンソメ（顆粒）', density: 0.6, category: 'spice' },
+            { id: 'baking_powder', name: 'ベーキングパウダー', density: 0.8, category: 'spice' },
+            { id: 'baking_soda', name: '重曹', density: 0.8, category: 'spice' },
+            { id: 'dry_yeast', name: 'ドライイースト', density: 0.6, category: 'spice' },
+            { id: 'gelatin', name: 'ゼラチン（粉）', density: 0.6, category: 'spice' },
+            { id: 'agar', name: '寒天（粉）', density: 0.6, category: 'spice' },
+            { id: 'cocoa', name: 'ココアパウダー', density: 0.4, category: 'spice' },
+            { id: 'matcha', name: '抹茶', density: 0.4, category: 'spice' },
+            { id: 'kinako', name: 'きなこ', density: 0.53, category: 'spice' },
+            { id: 'sesame_white', name: '白ごま', density: 0.6, category: 'spice' },
+            { id: 'sesame_black', name: '黒ごま', density: 0.6, category: 'spice' },
+            { id: 'aonori', name: '青のり', density: 0.13, category: 'spice' },
+            { id: 'katsuobushi', name: 'かつお節', density: 0.13, category: 'spice' }
+        ];
+
+        // 単位のml値
+        const unitMlValues = {
+            tablespoon: 15,
+            teaspoon: 5,
+            cup: 200,
+            ml: 1,
+            gram: -1
+        };
+
+        // 現在選択中の調味料
+        let selectedSeasoning = seasonings[0];
+        let selectedCategory = null;
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategoryChips();
+            renderSeasoningList();
+            calculate();
+        });
+
+        // カテゴリチップを描画
+        function renderCategoryChips() {
+            const container = document.getElementById('categoryChips');
+            let html = `<button class="chip ${selectedCategory === null ? 'active' : ''}" onclick="selectCategory(null)">すべて</button>`;
+
+            for (const [key, cat] of Object.entries(categories)) {
+                html += `<button class="chip ${selectedCategory === key ? 'active' : ''}" onclick="selectCategory('${key}')">${cat.emoji} ${cat.name}</button>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // カテゴリ選択
+        function selectCategory(cat) {
+            selectedCategory = cat;
+            renderCategoryChips();
+            filterSeasonings();
+        }
+
+        // 調味料リストを描画
+        function renderSeasoningList(filteredList = null) {
+            const container = document.getElementById('seasoningList');
+            const list = filteredList || seasonings;
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+
+            // 検索フィルター
+            let filtered = list;
+            if (searchQuery) {
+                filtered = list.filter(s => s.name.toLowerCase().includes(searchQuery));
+            }
+
+            // カテゴリフィルター
+            if (selectedCategory) {
+                filtered = filtered.filter(s => s.category === selectedCategory);
+            }
+
+            // カテゴリ別にグループ化
+            const grouped = {};
+            filtered.forEach(s => {
+                if (!grouped[s.category]) {
+                    grouped[s.category] = [];
+                }
+                grouped[s.category].push(s);
+            });
+
+            let html = '';
+            for (const [catKey, items] of Object.entries(grouped)) {
+                const cat = categories[catKey];
+                html += `<div class="category-header">${cat.emoji} ${cat.name}</div>`;
+                items.forEach(s => {
+                    html += `
+                        <div class="seasoning-item" onclick="selectSeasoning('${s.id}')">
+                            <span class="emoji">${cat.emoji}</span>
+                            <div class="info">
+                                <div class="name">${s.name}</div>
+                                <div class="density">${s.density} g/ml</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (filtered.length === 0) {
+                html = '<div style="text-align:center;padding:40px;color:#9E9E9E;">🔍<br>見つかりませんでした</div>';
+            }
+
+            container.innerHTML = html;
+        }
+
+        // 調味料を検索
+        function filterSeasonings() {
+            renderSeasoningList();
+        }
+
+        // 調味料を選択
+        function selectSeasoning(id) {
+            selectedSeasoning = seasonings.find(s => s.id === id);
+            const cat = categories[selectedSeasoning.category];
+
+            document.getElementById('selectedEmoji').textContent = cat.emoji;
+            document.getElementById('selectedName').textContent = selectedSeasoning.name;
+            document.getElementById('selectedDensity').textContent = selectedSeasoning.density;
+
+            closeModal();
+            calculate();
+        }
+
+        // 分数に変換
+        function toFraction(value) {
+            if (value === 0) return '0';
+
+            const commonFractions = [
+                [1/8, '1/8'],
+                [1/6, '1/6'],
+                [1/4, '1/4'],
+                [1/3, '1/3'],
+                [3/8, '3/8'],
+                [1/2, '1/2'],
+                [5/8, '5/8'],
+                [2/3, '2/3'],
+                [3/4, '3/4'],
+                [5/6, '5/6'],
+                [7/8, '7/8']
+            ];
+
+            const tolerance = 0.02;
+            const wholePart = Math.floor(value);
+            const fractionalPart = value - wholePart;
+
+            if (fractionalPart < tolerance) {
+                return wholePart.toString();
+            }
+
+            if (fractionalPart > 1 - tolerance) {
+                return (wholePart + 1).toString();
+            }
+
+            const matched = commonFractions.find(([dec, _]) => Math.abs(fractionalPart - dec) < tolerance);
+
+            if (matched) {
+                return wholePart > 0 ? `${wholePart} ${matched[1]}` : matched[1];
+            }
+
+            // 分数に変換できない場合
+            return formatDecimal(value);
+        }
+
+        // 小数をフォーマット
+        function formatDecimal(value) {
+            if (value >= 100) return value.toFixed(1).replace(/\.?0+$/, '');
+            if (value >= 10) return value.toFixed(2).replace(/\.?0+$/, '');
+            if (value >= 1) return value.toFixed(2).replace(/\.?0+$/, '');
+            if (value >= 0.1) return value.toFixed(3).replace(/\.?0+$/, '');
+            return value.toFixed(4).replace(/\.?0+$/, '');
+        }
+
+        // 換算計算
+        function calculate() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const fromUnit = document.getElementById('unit').value;
+            const density = selectedSeasoning.density;
+
+            // まずmlに変換
+            let mlAmount;
+            if (fromUnit === 'gram') {
+                mlAmount = amount / density;
+            } else {
+                mlAmount = amount * unitMlValues[fromUnit];
+            }
+
+            // 各単位に変換
+            const results = {
+                tablespoon: mlAmount / 15,
+                teaspoon: mlAmount / 5,
+                cup: mlAmount / 200,
+                ml: mlAmount,
+                gram: mlAmount * density
+            };
+
+            // 表示を更新（大さじ・小さじ・カップは分数表記）
+            document.getElementById('result-tablespoon').textContent = toFraction(results.tablespoon);
+            document.getElementById('result-teaspoon').textContent = toFraction(results.teaspoon);
+            document.getElementById('result-cup').textContent = toFraction(results.cup);
+            document.getElementById('result-ml').textContent = formatDecimal(results.ml);
+            document.getElementById('result-gram').textContent = formatDecimal(results.gram);
+        }
+
+        // モーダル操作
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('searchInput').value = '';
+            selectedCategory = null;
+            renderCategoryChips();
+            renderSeasoningList();
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function closeModalOnOverlay(event) {
+            if (event.target === document.getElementById('modal')) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
